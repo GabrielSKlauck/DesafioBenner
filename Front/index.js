@@ -15,7 +15,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//FORMATA A PLACA DIGITADA CORRETAMENTE
+document.addEventListener('DOMContentLoaded', function() {
+    let placa = document.getElementById('placa'); 
+    placa.addEventListener('input', function(event) {
+        let value = placa.value;
+        value = value.replace(/[^A-Z0-9]/gi, '');
+        if (value.length <= 7) {
+            value = value.toUpperCase(); 
+            value = value.replace(/^([A-Z]{3})([A-Z0-9]{0,4})/, '$1-$2');
+        }    
+        placa.value = value;
+    });
+});
+
+//ABRE E FECHA O MODAL DE ENVIO DA PLACA DO CARRO
 function abrirModal(){
+    let input = document.getElementById("placa");
+    input.value = "";
     let form = document.getElementById("form");
     form.style.display = "block";
+    
 }
