@@ -1,0 +1,19 @@
+div{
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+#titulo{
+    font-size: 30px
+}
+#horario-atual{
+    font-size: 20px;
+    font-style: italic;
+}
+button{
+    margin-left: 10px;
+}
+form{
+    display: none;
+    width: 100px;
+    margin-top: 5px;
+}
