@@ -1,4 +1,4 @@
-div{
+#conteudo-base{
     margin-left: 10px;
     margin-bottom: 5px;
 }
@@ -16,4 +16,15 @@ form{
     display: none;
     width: 100px;
     margin-top: 5px;
+}
+::placeholder{
+    margin-left: 5px;
+}
+#conteudo-botao{
+    margin-right: 10px;
+    margin-top: 5px;
+    display: flex;
+}
+#enviar{
+    margin-right: 10px;
 }

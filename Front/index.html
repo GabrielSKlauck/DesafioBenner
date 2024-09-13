@@ -9,15 +9,17 @@
     <title>Desafio</title>
 </head>
 <body>
-    <div>
+    <div id="conteudo-base">
         <p class="font-weight-bold" id="titulo">Sistema de estacionamento</p>
-        <p id="horario-atual">asdas</p>
+        <p id="horario-atual"></p>
         <button class="btn btn-success" onclick="abrirModal()">Marcar Entrada</button>
-        <button class="btn btn-danger" disabled>Marcar Saida</button>
 
         <form action="" id="form">       
-            <input type="text" class="form-control">
-            <button class="">Cancelar</button>
+            <input type="text" class="form-control" id="placa" maxlength="8" placeholder="Placa">
+            <div id="conteudo-botao">
+                <button class="btn btn-primary" id="enviar">Enviar</button>
+                <button class="btn btn-danger" id="cancelar">Cancelar</button>
+            </div>          
         </form>
     </div>
     <table class="table table-striped">
@@ -31,17 +33,24 @@
                 <th>Tempo Cobrado por hora</th>
                 <th>Preço</th>
                 <th>Valor a pagar</th>
+                
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <!-- <td></td>
+            <tr id="listagem">
+                <!-- 
                 <td></td>
                 <td></td>
-                <td></td> -->
+                <td></td> 
+                <td></td>
+                <td></td>
+                <td></td> 
+                <td></td>
+                <td><Button class="btn btn-primary">Selecionar</Button></td>-->
             </tr>
         </tbody>
     </table>
     <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>
 </html>
