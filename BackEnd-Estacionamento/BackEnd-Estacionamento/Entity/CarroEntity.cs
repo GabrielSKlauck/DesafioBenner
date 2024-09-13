@@ -2,7 +2,8 @@
 {
     public class CarroEntity
     {
-        public int Id { get; set; } 
+        public int id { get; set; } 
+        public string placa { get; set; }
         public DateTime chegada { get; set; }
         public DateTime saida { get; set; }
         public TimeOnly duracao { get; set; }
