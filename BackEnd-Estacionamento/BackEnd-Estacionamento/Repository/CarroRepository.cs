@@ -8,16 +8,27 @@ namespace BackEnd_Estacionamento.Repository
 {
     public class CarroRepository : Connection, ICarroRepository
     {
-        public async Task Adicionar(CarroDTO carro)
+        public async Task Adicionar(string placa)
         {
             string sql = @$"INSERT INTO CARRO(placa, preco) 
-                            VALUES(@placa,{2})";
-            await this.Execute(sql, carro);
+                            VALUES('{placa}',{2})";
+            await this.Execute(sql, new { placa});
         }
 
-        public Task Finalizar(string placa)
+        public async Task Finalizar(string placa)
         {
-            throw new NotImplementedException();
+            string sql = $"SELECT * FROM CARRO WHERE placa LIKE '{placa}'";
+            CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
+            DateTime horaAtual = DateTime.Now;
+
+
+            TimeSpan tempoPermanecido = horaAtual - carro.chegada;
+
+            if (tempoPermanecido.TotalMinutes <= 30)
+            {
+                sql = @$"UPDATE CARROS SET ";
+            }
+            
         }
 
         public async Task<IEnumerable<CarroEntity>> GetTodos()

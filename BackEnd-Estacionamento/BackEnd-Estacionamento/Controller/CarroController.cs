@@ -12,7 +12,7 @@ namespace BackEnd_Estacionamento.Controller
     {
         private readonly ICarroRepository _carroRepository; 
 
-        public CarroController(CarroRepository carroRepository)
+        public CarroController(ICarroRepository carroRepository)
         {
             _carroRepository = carroRepository;
         }
@@ -20,15 +20,22 @@ namespace BackEnd_Estacionamento.Controller
         [HttpGet]
         public async Task<IActionResult> GetTodos()
         {
-            await _carroRepository.GetTodos();
-            return Ok();
+            
+            return Ok(await _carroRepository.GetTodos());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Adicionar(CarroDTO carro)
+        public async Task<IActionResult> Adicionar(string placa)
         {
-            await _carroRepository.Adicionar(carro);
+            await _carroRepository.Adicionar(placa);
             return Ok();    
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Finalizar(string placa)
+        {
+            await _carroRepository.Finalizar(placa);
+            return Ok();
         }
     }
 }

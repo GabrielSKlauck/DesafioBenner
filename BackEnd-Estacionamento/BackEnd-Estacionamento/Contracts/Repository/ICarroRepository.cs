@@ -5,7 +5,7 @@ namespace BackEnd_Estacionamento.Contracts.Repository
 {
     public interface ICarroRepository
     {
-        Task Adicionar(CarroDTO carro);
+        Task Adicionar(string placa);
         Task<IEnumerable<CarroEntity>> GetTodos();
         Task Finalizar(string placa);
     }

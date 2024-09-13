@@ -5,7 +5,7 @@ namespace BackEnd_Estacionamento.Infrastucture
 {
     public class Connection
     {
-        protected string connectionString = "Server=localhost;Database=ajudaai;User=root;Password=root;";
+        protected string connectionString = "Server=localhost;Database=desafiobenner;User=root;Password=root;";
         protected MySqlConnection GetConnection()
         {
             return new MySqlConnection(connectionString);
