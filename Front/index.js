@@ -3,6 +3,15 @@ window.onload=function(){
     let dataAtual = new Date();
     let data = dataAtual.getDay() + "/" + dataAtual.getMonth() + "/" + dataAtual.getFullYear();
     document.getElementById("horario-atual").innerHTML = data
+
+    $.ajax({
+        type: "GET",
+        url: `https://localhost:7070/ControleCarro`,
+        success: carregaTabela,
+        header: {},
+        contentType: "application/json",
+        datatype: "json",
+    });
 }
 
 //CANCELA E NÃO RECARREGA A PAGINA
@@ -36,4 +45,39 @@ function abrirModal(){
     let form = document.getElementById("form");
     form.style.display = "block";
     
+}
+
+//ENVIO DA PLACA PARA O BANCO
+function registrarPlaca(){
+    let placa = document.getElementById("placa").value;
+    if(placa === ""){
+        return;
+    }
+    $.ajax({
+        type: "POST",
+        url: `https://localhost:7070/ControleCarro/${placa}`,
+        header: {},
+        contentType: "application/json",
+        datatype: "json",
+    });
+}
+
+//CARREGA CARROS DO BANCO E AGREGA AO TBODY 
+function carregaTabela(itens){
+    itens.forEach(linha => { 
+        const carro = `
+            <tr>
+                <td>${linha.id}</td>
+                <td>${linha.placa}</td>
+                <td>${linha.chegada}</td> 
+                <td>${linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida}</td>
+                <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
+                <td>${linha.tempoCobradoHora}</td> 
+                <td>${linha.preco}</td>
+                <td>${linha.valorPagar}</td>
+                <td><Button class="btn btn-danger" onclick("finalizar(${linha.id})")>Finalizar</Button></td>
+            </tr>
+       `;
+        $(`#listagem`).append($(carro));
+    });  
 }
