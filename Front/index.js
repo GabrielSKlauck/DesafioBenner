@@ -3,6 +3,8 @@ window.onload=function(){
     let dataAtual = new Date();
     let data = dataAtual.getDay() + "/" + dataAtual.getMonth() + "/" + dataAtual.getFullYear();
     document.getElementById("horario-atual").innerHTML = data
+
+    
 }
 
 //CANCELA E NÃO RECARREGA A PAGINA
@@ -36,4 +38,18 @@ function abrirModal(){
     let form = document.getElementById("form");
     form.style.display = "block";
     
+}
+
+function registrarPlaca(){
+    let placa = document.getElementById("placa").value;
+    if(placa === ""){
+        return;
+    }
+    $.ajax({
+        type: "POST",
+        url: `https://localhost:7070/ControleCarro/${placa}`,
+        header: {},
+        contentType: "application/json",
+        datatype: "json",
+    });
 }

@@ -24,7 +24,7 @@ namespace BackEnd_Estacionamento.Controller
             return Ok(await _carroRepository.GetTodos());
         }
 
-        [HttpPost]
+        [HttpPost("{placa}")]
         public async Task<IActionResult> Adicionar(string placa)
         {
             await _carroRepository.Adicionar(placa);
