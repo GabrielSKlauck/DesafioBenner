@@ -21,15 +21,13 @@ namespace BackEnd_Estacionamento.Repository
             CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
 
             DateTime horaAtual = DateTime.Now;
-            string horaAlterada = horaAtual.ToString("yyyy-MM-dd HH:mm:ss");
-            horaAtual = DateTime.Parse(horaAlterada);
-
+            string aux = horaAtual.ToString("yyyy-MM-dd HH:mm:ss");
+            horaAtual = DateTime.Parse(aux).ToUniversalTime();
             
             double totalPagar = 0;
-
-            TimeSpan tempoPermanecido = carro.saida - carro.chegada;
+          
+            TimeSpan tempoPermanecido = horaAtual - carro.chegada; 
             int horaCobrada = tempoPermanecido.Hours;
-            //TimeSpan tempoPermanecido = horaAtual - carro.chegada; ####JEITO CERTO###
 
             if (tempoPermanecido.Hours >= 1)
             {
@@ -37,8 +35,8 @@ namespace BackEnd_Estacionamento.Repository
                 {                   
                     totalPagar = (tempoPermanecido.Hours+1) * 2;
                     horaCobrada++;
-                    //sql = @$"UPDATE CARRO SET SAIDA = '{horaAlterada}',
-                    sql = @$"UPDATE CARRO SET DURACAO = '{tempoPermanecido}',
+                    sql = @$"UPDATE CARRO SET SAIDA = '{horaAtual}',
+                                           DURACAO = '{tempoPermanecido}',
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
@@ -48,8 +46,8 @@ namespace BackEnd_Estacionamento.Repository
                 else
                 {
                     totalPagar = tempoPermanecido.Hours * 2;
-                    //sql = @$"UPDATE CARRO SET SAIDA = '{horaAlterada}',
-                    sql = @$"UPDATE CARRO SET DURACAO = '{tempoPermanecido}',
+                    sql = @$"UPDATE CARRO SET SAIDA = '{horaAtual}',
+                                           DURACAO = '{tempoPermanecido}',
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
@@ -61,8 +59,8 @@ namespace BackEnd_Estacionamento.Repository
             {
                 horaCobrada = 1;
                 totalPagar = 1;
-                //sql = @$"UPDATE CARRO SET SAIDA = '{horaAlterada}',
-                sql = @$"UPDATE CARRO SET DURACAO = '{tempoPermanecido}',
+                sql = @$"UPDATE CARRO SET SAIDA = '{horaAtual}',
+                                           DURACAO = '{tempoPermanecido}',
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
@@ -72,8 +70,8 @@ namespace BackEnd_Estacionamento.Repository
             else
             {
                 totalPagar = 2;
-                //sql = @$"UPDATE CARRO SET SAIDA = '{horaAlterada}',
-                sql = @$"UPDATE CARRO SET DURACAO = '{tempoPermanecido}',
+                sql = @$"UPDATE CARRO SET SAIDA = '{horaAtual}',
+                                           DURACAO = '{tempoPermanecido}',
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
