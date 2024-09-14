@@ -46,7 +46,7 @@ namespace BackEnd_Estacionamento.Repository
 
         public async Task<IEnumerable<CarroEntity>> GetTodos()
         {
-            string sql = "SELECT * FROM CARRO";
+            string sql = "SELECT * FROM CARRO ORDER BY DURACAO";
             return await GetConnection().QueryAsync<CarroEntity>(sql);
         }
     }
