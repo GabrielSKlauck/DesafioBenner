@@ -10,8 +10,8 @@ namespace BackEnd_Estacionamento.Repository
     {
         public async Task Adicionar(string placa)
         {
-            string sql = @$"INSERT INTO CARRO(placa, preco) 
-                            VALUES('{placa}',{2})";
+            string sql = @$"INSERT INTO CARRO(placa, preco, saida) 
+                            VALUES('{placa}',{2}, null)";
             await this.Execute(sql, new { placa});
         }
 

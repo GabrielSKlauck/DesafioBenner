@@ -70,8 +70,8 @@ function carregaTabela(itens){
                 <td>${linha.id}</td>
                 <td>${linha.placa}</td>
                 <td>${linha.chegada}</td> 
-                <td>${linha.saida}</td>
-                <td>${linha.duracao}</td>
+                <td>${linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida}</td>
+                <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
                 <td>${linha.tempoCobradoHora}</td> 
                 <td>${linha.preco}</td>
                 <td>${linha.valorPagar}</td>
