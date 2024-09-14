@@ -19,14 +19,27 @@ namespace BackEnd_Estacionamento.Repository
         {
             string sql = $"SELECT * FROM CARRO WHERE placa LIKE '{placa}'";
             CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
+
             DateTime horaAtual = DateTime.Now;
+            string horaAlterada = horaAtual.ToString("yyyy-MM-dd HH:mm:ss");
+            horaAtual = DateTime.Parse(horaAlterada);
 
+            int valorHora = 0;
+            double totalPagar = 0;
 
-            TimeSpan tempoPermanecido = horaAtual - carro.chegada;
+            TimeSpan tempoPermanecido = carro.saida - carro.chegada;
+            //TimeSpan tempoPermanecido = horaAtual - carro.chegada; ####JEITO CERTO###
 
             if (tempoPermanecido.TotalMinutes <= 30)
             {
-                sql = @$"UPDATE CARROS SET ";
+                valorHora = 1;
+                totalPagar = 1;
+                sql = @$"UPDATE CARRO SET SAIDA = '{horaAlterada}',
+                                           DURACAO = '{tempoPermanecido}',
+                                           TEMPOCOBRADOHORA = {valorHora},
+                                           VALORPAGAR = {totalPagar}
+                                           WHERE PLACA LIKE '{placa}'";
+                await this.Execute(sql, new {placa });
             }
             
         }
