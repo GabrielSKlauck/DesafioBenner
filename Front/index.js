@@ -14,19 +14,6 @@ window.onload=function(){
     });
 }
 
-// const form = document.getElementById('form')
-// form.addEventListener('submit', e => {
-//     e.preventDefault()
-// })
-// const formPes = document.getElementById('caixaPesquisa')
-// formPes.addEventListener('submit', e => {
-//     e.preventDefault()
-// })
-// const formEspec = document.getElementById('caixaPesquisaEspec')
-// formEspec.addEventListener('submit', e => {
-//     e.preventDefault()
-// })
-
 //FORMATA A PLACA DIGITADA CORRETAMENTE
 document.addEventListener('DOMContentLoaded', function() {
     let placas = document.getElementsByClassName('input-info'); 
@@ -76,7 +63,12 @@ function abrirModalEspec(){
     divEspec.style.display = "block";
 }
 
-function pesquisarDia(){
+function registrarEspecifico(){
+    let c = document.getElementById("chegada").value;
+    let s = document.getElementById("saida").value;
+    if(s < c ){
+        return;
+    }
     cancelar();
 }
 
