@@ -14,7 +14,7 @@
         <p id="horario-atual"></p>
         <button class="btn btn-success" onclick="abrirModal()">Marcar Entrada</button>
         <button class="btn btn-success" onclick="abrirModalPesquisa()">Pesquisar placa</button>
-        <button class="btn btn-success" onclick="abrirModalPesquisaDia()">Pesquisar por dia</button>
+        <button class="btn btn-success" onclick="abrirModalEspec()">Registrar detalhadamente</button>
 
         <form action="" id="form" class="modal-meu">       
             <input type="text" class="form-control input-info" id="placa" maxlength="8" placeholder="Placa">
@@ -32,13 +32,17 @@
             </div>
         </div>
 
-        <div id="caixaPesquisaDia" class="modal-meu">
-            <input type="date" class="form-control input-info" id="dia" style="width: 150px;">
+        <form action="" id="caixaPesquisaEspec" class="modal-meu">
+            <input type="text" class="form-control input-info" id="placa" maxlength="8" placeholder="Placa">
+            <label for="">Chegada</label>
+            <input type="datetime-local" class="form-control input-date" id="chegada" style="width: 150px;">
+            <label for="">Saida</label>
+            <input type="datetime-local" class="form-control input-date" id="saida" style="width: 150px;">
             <div id="conteudo-botao">
-                <button class="btn btn-primary" id="enviar" onclick="pesquisarDia()">Pesquisar</button>
+                <button class="btn btn-primary" id="enviar" onclick="registrarEspecifico()">Pesquisar</button>
                 <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
             </div>
-        </div>
+        </form>
     </div>
     <table class="table table-striped">
         <thead>

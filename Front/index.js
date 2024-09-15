@@ -14,6 +14,19 @@ window.onload=function(){
     });
 }
 
+// const form = document.getElementById('form')
+// form.addEventListener('submit', e => {
+//     e.preventDefault()
+// })
+// const formPes = document.getElementById('caixaPesquisa')
+// formPes.addEventListener('submit', e => {
+//     e.preventDefault()
+// })
+// const formEspec = document.getElementById('caixaPesquisaEspec')
+// formEspec.addEventListener('submit', e => {
+//     e.preventDefault()
+// })
+
 //FORMATA A PLACA DIGITADA CORRETAMENTE
 document.addEventListener('DOMContentLoaded', function() {
     let placas = document.getElementsByClassName('input-info'); 
@@ -51,12 +64,16 @@ function pesquisarPlaca(){
 
 }
 
-function abrirModalPesquisaDia(){
-    let input = document.getElementById("dia");
+function abrirModalEspec(){
+    let input = document.getElementById("placa");
     input.value = "";
+    let chegada = document.getElementById("chegada");
+    chegada.value = 0;
+    let saida = document.getElementById("saida");
+    saida.value = 0;
     cancelar();
-    let divPesquisa = document.getElementById("caixaPesquisaDia");
-    divPesquisa.style.display = "block";
+    let divEspec = document.getElementById("caixaPesquisaEspec");
+    divEspec.style.display = "block";
 }
 
 function pesquisarDia(){
@@ -64,7 +81,6 @@ function pesquisarDia(){
 }
 
 function cancelar(){
-    event.preventDefault();
     let input = document.getElementsByClassName("input-info");
     for(const inputSeparado of input){
         inputSeparado.value = "";
@@ -72,7 +88,8 @@ function cancelar(){
     let divs = document.getElementsByClassName("modal-meu")
     for(const divsSeparadas of divs){
         divsSeparadas.style.display = "none";
-    }  
+    }
+    event.preventDefault();
 }
 
 //ENVIO DA PLACA PARA O BANCO

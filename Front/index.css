@@ -12,10 +12,14 @@
 button{
     margin-left: 10px;
 }
-form,#caixaPesquisa, #caixaPesquisaDia{
+form,#caixaPesquisa, #caixaPesquisaEspec{
     display: none;
     width: 100px;
     margin-top: 5px;
+}
+label{
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 ::placeholder{
     margin-left: 5px;
