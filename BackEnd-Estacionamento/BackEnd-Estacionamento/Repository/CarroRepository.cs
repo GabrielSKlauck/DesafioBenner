@@ -11,18 +11,36 @@ namespace BackEnd_Estacionamento.Repository
     {
         public async Task Adicionar(string placa)
         {
-            string sql = @$"INSERT INTO CARRO(placa, preco, saida) 
-                            VALUES('{placa}',{2}, null)";
+            string sql = @$"INSERT INTO CARRO(placa, preco) 
+                            VALUES('{placa}',{2})";
             await this.Execute(sql, new { placa});
+        }
+
+        public async Task AdicionarEspecifico(CarroDetailDTO carro)
+        {
+            string sql = @$"INSERT INTO CARRO(placa, chegada, saida,preco) 
+                            VALUES(@placa, @chegada, @saida, {2})";
+            await this.Execute(sql, carro);
         }
 
         public async Task Finalizar(string placa)
         {
             string sql = $"SELECT * FROM CARRO WHERE placa LIKE '{placa}'";
             CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
+            DateTime testagemData = new DateTime(00001, 01,01,00,00,00);
 
-            DateTime horaAtual = DateTime.Now;
-            var horaSql = System.String.Format("{0:yyyy-MM-dd HH:mm:ss}", horaAtual);           
+            DateTime horaAtual;
+            string horaSql;
+            if (DateTime.Compare(carro.saida, testagemData) == 0)
+            {
+                horaAtual = DateTime.Now;
+                horaSql = System.String.Format("{0:yyyy-MM-dd HH:mm:ss}", horaAtual);
+            }
+            else
+            {
+                horaAtual = carro.saida;
+                horaSql = System.String.Format("{0:yyyy-MM-dd HH:mm:ss}", horaAtual);
+            }           
             
             double totalPagar = 0;
           
@@ -81,6 +99,12 @@ namespace BackEnd_Estacionamento.Repository
                                            WHERE PLACA LIKE '{placa}'";
                 await this.Execute(sql, new { placa });
             }
+        }
+
+        public async Task<CarroEntity> GetCarro(string placa)
+        {
+            string sql = $"SELECT * FROM CARRO WHERE PLACA LIKE '{placa}'";
+            return await GetConnection().QueryFirstAsync<CarroEntity>(sql, new { placa });
         }
 
         public async Task<IEnumerable<CarroEntity>> GetTodos()
