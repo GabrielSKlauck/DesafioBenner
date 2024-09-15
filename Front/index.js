@@ -16,7 +16,7 @@ window.onload=function(){
 
 //FORMATA A PLACA DIGITADA CORRETAMENTE
 document.addEventListener('DOMContentLoaded', function() {
-    let placas = document.getElementsByClassName('input-placa'); 
+    let placas = document.getElementsByClassName('input-info'); 
     for(const placaInd of placas){
         placaInd.addEventListener('input', function(event) {
             let value = placaInd.value;
@@ -47,9 +47,25 @@ function abrirModalPesquisa(){
     divPesquisa.style.display = "block";
 }
 
+function pesquisarPlaca(){
+
+}
+
+function abrirModalPesquisaDia(){
+    let input = document.getElementById("dia");
+    input.value = "";
+    cancelar();
+    let divPesquisa = document.getElementById("caixaPesquisaDia");
+    divPesquisa.style.display = "block";
+}
+
+function pesquisarDia(){
+    cancelar();
+}
+
 function cancelar(){
     event.preventDefault();
-    let input = document.getElementsByClassName("input-placa");
+    let input = document.getElementsByClassName("input-info");
     for(const inputSeparado of input){
         inputSeparado.value = "";
     }

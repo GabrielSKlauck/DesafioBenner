@@ -12,12 +12,7 @@
 button{
     margin-left: 10px;
 }
-form{
-    display: none;
-    width: 100px;
-    margin-top: 5px;
-}
-#caixaPesquisa{
+form,#caixaPesquisa, #caixaPesquisaDia{
     display: none;
     width: 100px;
     margin-top: 5px;

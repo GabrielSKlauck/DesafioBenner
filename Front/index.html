@@ -14,9 +14,10 @@
         <p id="horario-atual"></p>
         <button class="btn btn-success" onclick="abrirModal()">Marcar Entrada</button>
         <button class="btn btn-success" onclick="abrirModalPesquisa()">Pesquisar placa</button>
+        <button class="btn btn-success" onclick="abrirModalPesquisaDia()">Pesquisar por dia</button>
 
         <form action="" id="form" class="modal-meu">       
-            <input type="text" class="form-control input-placa" id="placa" maxlength="8" placeholder="Placa">
+            <input type="text" class="form-control input-info" id="placa" maxlength="8" placeholder="Placa">
             <div id="conteudo-botao">
                 <button class="btn btn-primary" id="enviar" onclick="registrarPlaca()">Registrar</button>
                 <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
@@ -24,9 +25,17 @@
         </form>
         
         <div id="caixaPesquisa" class="modal-meu">
-            <input type="text" class="form-control input-placa" id="placa" maxlength="8" placeholder="Placa">
+            <input type="text" class="form-control input-info" id="placa" maxlength="8" placeholder="Placa">
             <div id="conteudo-botao">
                 <button class="btn btn-primary" id="enviar" onclick="pesquisarPlaca()">Pesquisar</button>
+                <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
+            </div>
+        </div>
+
+        <div id="caixaPesquisaDia" class="modal-meu">
+            <input type="date" class="form-control input-info" id="dia" style="width: 150px;">
+            <div id="conteudo-botao">
+                <button class="btn btn-primary" id="enviar" onclick="pesquisarDia()">Pesquisar</button>
                 <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
             </div>
         </div>
