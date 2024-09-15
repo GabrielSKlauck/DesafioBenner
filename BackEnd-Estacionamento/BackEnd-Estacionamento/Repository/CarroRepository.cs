@@ -22,7 +22,7 @@ namespace BackEnd_Estacionamento.Repository
             CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
 
             DateTime horaAtual = DateTime.Now;
-            var horaSql = System.String.Format("{0:yyyy/MM/dd HH:mm:ss}", horaAtual);           
+            var horaSql = System.String.Format("{0:yyyy-MM-dd HH:mm:ss}", horaAtual);           
             
             double totalPagar = 0;
           

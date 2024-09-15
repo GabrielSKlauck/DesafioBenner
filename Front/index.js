@@ -49,6 +49,7 @@ function abrirModal(){
 
 //ENVIO DA PLACA PARA O BANCO
 function registrarPlaca(){
+    //event.preventDefault();
     let placa = document.getElementById("placa").value;
     if(placa === ""){
         return;
@@ -88,7 +89,7 @@ function finalizar(placa){
         type: "PUT",
         url: `https://localhost:7070/ControleCarro/${placa}`,
         header: {},
-        success: window.location.reload,
+        success: window.location.reload(),
         contentType: "application/json",
         datatype: "json",
     });
