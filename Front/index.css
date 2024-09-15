@@ -17,6 +17,11 @@ form{
     width: 100px;
     margin-top: 5px;
 }
+#caixaPesquisa{
+    display: none;
+    width: 100px;
+    margin-top: 5px;
+}
 ::placeholder{
     margin-left: 5px;
 }
