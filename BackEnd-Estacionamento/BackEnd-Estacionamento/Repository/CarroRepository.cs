@@ -3,6 +3,7 @@ using BackEnd_Estacionamento.DTO;
 using BackEnd_Estacionamento.Entity;
 using BackEnd_Estacionamento.Infrastucture;
 using Dapper;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BackEnd_Estacionamento.Repository
 {
@@ -21,27 +22,65 @@ namespace BackEnd_Estacionamento.Repository
             CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
 
             DateTime horaAtual = DateTime.Now;
-            string horaAlterada = horaAtual.ToString("yyyy-MM-dd HH:mm:ss");
-            horaAtual = DateTime.Parse(horaAlterada);
-
-            int valorHora = 0;
+            var horaSql = System.String.Format("{0:yyyy-MM-dd HH:mm:ss}", horaAtual);           
+            
             double totalPagar = 0;
+          
+            TimeSpan tempoPermanecido = horaAtual - carro.chegada; 
+            int horaCobrada = tempoPermanecido.Hours;
 
-            TimeSpan tempoPermanecido = carro.saida - carro.chegada;
-            //TimeSpan tempoPermanecido = horaAtual - carro.chegada; ####JEITO CERTO###
 
-            if (tempoPermanecido.TotalMinutes <= 30)
+            
+
+            if (tempoPermanecido.Hours >= 1)
             {
-                valorHora = 1;
-                totalPagar = 1;
-                sql = @$"UPDATE CARRO SET SAIDA = '{horaAlterada}',
+                if(tempoPermanecido.Minutes > 10)
+                {                   
+                    totalPagar = (tempoPermanecido.Hours+1) * 2;
+                    horaCobrada++;
+                    sql = @$"UPDATE CARRO SET SAIDA = '{horaSql}',
                                            DURACAO = '{tempoPermanecido}',
-                                           TEMPOCOBRADOHORA = {valorHora},
+                                           TEMPOCOBRADOHORA = {horaCobrada},
+                                           PRECO = 2,
                                            VALORPAGAR = {totalPagar}
                                            WHERE PLACA LIKE '{placa}'";
-                await this.Execute(sql, new {placa });
+                    await this.Execute(sql, new { placa });
+                }
+                else
+                {
+                    totalPagar = tempoPermanecido.Hours * 2;
+                    sql = @$"UPDATE CARRO SET SAIDA = '{horaSql}',
+                                           DURACAO = '{tempoPermanecido}',
+                                           TEMPOCOBRADOHORA = {horaCobrada},
+                                           PRECO = 2,
+                                           VALORPAGAR = {totalPagar}
+                                           WHERE PLACA LIKE '{placa}'";
+                    await this.Execute(sql, new { placa });
+                }
+               
+            }else if (tempoPermanecido.TotalMinutes <= 30)
+            {
+                horaCobrada = 1;
+                totalPagar = 1;
+                sql = @$"UPDATE CARRO SET SAIDA = '{horaSql}',
+                                           DURACAO = '{tempoPermanecido}',
+                                           TEMPOCOBRADOHORA = {horaCobrada},
+                                           PRECO = 2,
+                                           VALORPAGAR = {totalPagar}
+                                           WHERE PLACA LIKE '{placa}'";
+                await this.Execute(sql, new { placa });
             }
-            
+            else
+            {
+                totalPagar = 2;
+                sql = @$"UPDATE CARRO SET SAIDA = '{horaSql}',
+                                           DURACAO = '{tempoPermanecido}',
+                                           TEMPOCOBRADOHORA = {horaCobrada},
+                                           PRECO = 2,
+                                           VALORPAGAR = {totalPagar}
+                                           WHERE PLACA LIKE '{placa}'";
+                await this.Execute(sql, new { placa });
+            }
         }
 
         public async Task<IEnumerable<CarroEntity>> GetTodos()

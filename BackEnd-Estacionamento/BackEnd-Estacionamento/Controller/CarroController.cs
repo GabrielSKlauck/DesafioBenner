@@ -31,7 +31,7 @@ namespace BackEnd_Estacionamento.Controller
             return Ok();    
         }
 
-        [HttpPut]
+        [HttpPut("{placa}")]
         public async Task<IActionResult> Finalizar(string placa)
         {
             await _carroRepository.Finalizar(placa);

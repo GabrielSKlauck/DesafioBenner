@@ -49,6 +49,7 @@ function abrirModal(){
 
 //ENVIO DA PLACA PARA O BANCO
 function registrarPlaca(){
+    //event.preventDefault();
     let placa = document.getElementById("placa").value;
     if(placa === ""){
         return;
@@ -75,9 +76,21 @@ function carregaTabela(itens){
                 <td>${linha.tempoCobradoHora}</td> 
                 <td>${linha.preco}</td>
                 <td>${linha.valorPagar}</td>
-                <td><Button class="btn btn-danger" onclick("finalizar(${linha.id})")>Finalizar</Button></td>
+                <td><Button class="btn btn-danger" onclick="finalizar('${linha.placa}')">Finalizar</Button></td>
             </tr>
        `;
         $(`#listagem`).append($(carro));
     });  
+}
+
+function finalizar(placa){
+    console.log("acho")
+    $.ajax({
+        type: "PUT",
+        url: `https://localhost:7070/ControleCarro/${placa}`,
+        header: {},
+        success: window.location.reload(),
+        contentType: "application/json",
+        datatype: "json",
+    });
 }
