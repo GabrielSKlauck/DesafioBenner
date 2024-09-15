@@ -33,13 +33,13 @@
         </div>
 
         <form action="" id="caixaPesquisaEspec" class="modal-meu">
-            <input type="text" class="form-control input-info" id="placa" maxlength="8" placeholder="Placa">
+            <input type="text" class="form-control input-info" id="placa-espec" maxlength="8" placeholder="Placa">
             <label for="">Chegada</label>
             <input type="datetime-local" class="form-control input-date" id="chegada" style="width: 200px;" min="2024-01-01T00:00" max="2024-12-31T00:00">
             <label for="">Saida</label>
             <input type="datetime-local" class="form-control input-date" id="saida" style="width: 200px;" min="2024-01-01T00:00" max="2024-12-31T00:00">
             <div id="conteudo-botao">
-                <button class="btn btn-primary" id="enviar" onclick="registrarEspecifico()">Pesquisar</button>
+                <button class="btn btn-primary" id="enviar" onclick="registrarEspecifico()">Inserir</button>
                 <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
             </div>
         </form>
@@ -55,6 +55,7 @@
                 <th>Tempo Cobrado por hora</th>
                 <th>Preço</th>
                 <th>Valor a pagar</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody id="listagem">

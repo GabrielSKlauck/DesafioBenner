@@ -67,6 +67,11 @@ function pesquisarPlaca() {
 function carregaItem(linha) {
     let tabela = document.getElementById("listagem");
     tabela.innerHTML = "";
+    if(linha.duracao != "00:00:00"){
+        btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
+    }else{
+        btn = `<Button class='btn btn-danger' onclick='finalizar("${linha.placa}")'>Finalizar</Button>`;
+    }
     const carro = `
     <tr>
         <td>${linha.id}</td>
@@ -76,8 +81,8 @@ function carregaItem(linha) {
         <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
         <td>${linha.tempoCobradoHora}</td> 
         <td>${linha.preco}</td>
-        <td>${linha.valorPagar}</td>
-        <td><Button class="btn btn-danger" onclick="finalizar('${linha.placa}')">Finalizar</Button></td>
+        <td>R$ ${parseFloat(linha.valorPagar).toFixed(2)}</td>
+        <td>${btn}</Button></td>
     </tr>`;
     $(`#listagem`).append($(carro));
 }
@@ -95,12 +100,29 @@ function abrirModalEspec() {
 }
 
 function registrarEspecifico() {
+    let input = document.getElementById("placa-espec").value;
     let c = document.getElementById("chegada").value;
     let s = document.getElementById("saida").value;
     if (s < c) {
         return;
     }
-    cancelar();
+    if(input === ""){
+        return;
+    }
+    carro = {
+        placa: input,
+        chegada: c,
+        saida: s
+    }
+    $.ajax({
+        type: "POST",
+        url: `https://localhost:7070/ControleCarro/addEspec`,
+        data: JSON.stringify(carro),
+        success: carregarItens,
+        header: {},
+        contentType: "application/json",
+        datatype: "json",
+    });
 }
 
 function cancelar() {
@@ -135,10 +157,12 @@ function registrarPlaca() {
 function carregaTabela(itens) {
     let tabela = document.getElementById("listagem");
     tabela.innerHTML = "";
-    let btn = "<Button class='btn btn-danger' onclick='finalizar('${linha.placa}')'>Finalizar</Button>";
+    let btn;
     itens.forEach(linha => {
         if(linha.duracao != "00:00:00"){
             btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
+        }else{
+            btn = `<Button class='btn btn-danger' onclick='finalizar("${linha.placa}")'>Finalizar</Button>`;
         }
         const carro = `
             <tr>
@@ -149,8 +173,8 @@ function carregaTabela(itens) {
                 <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
                 <td>${linha.tempoCobradoHora}</td> 
                 <td>${linha.preco}</td>
+                <td>R$ ${parseFloat(linha.valorPagar).toFixed(2)}</td>
                 <td>${btn}</td>
-                <td></td>
             </tr>
        `;
         $(`#listagem`).append($(carro));
@@ -163,7 +187,7 @@ function finalizar(placa) {
         type: "PUT",
         url: `https://localhost:7070/ControleCarro/${placa}`,
         header: {},
-        success: window.location.reload(),
+        success: carregarItens,
         contentType: "application/json",
         datatype: "json",
     });
