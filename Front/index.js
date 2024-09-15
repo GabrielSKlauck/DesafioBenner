@@ -1,9 +1,13 @@
 //AO CARREGAR O HTML, CARREGA A DATA ATUAL
-window.onload=function(){
+window.onload = function () {
     let dataAtual = new Date();
     let data = dataAtual.getDay() + "/" + dataAtual.getMonth() + "/" + dataAtual.getFullYear();
     document.getElementById("horario-atual").innerHTML = data
 
+    carregarItens();
+}
+
+function carregarItens(){
     $.ajax({
         type: "GET",
         url: `https://localhost:7070/ControleCarro`,
@@ -15,31 +19,31 @@ window.onload=function(){
 }
 
 //FORMATA A PLACA DIGITADA CORRETAMENTE
-document.addEventListener('DOMContentLoaded', function() {
-    let placas = document.getElementsByClassName('input-info'); 
-    for(const placaInd of placas){
-        placaInd.addEventListener('input', function(event) {
+document.addEventListener('DOMContentLoaded', function () {
+    let placas = document.getElementsByClassName('input-info');
+    for (const placaInd of placas) {
+        placaInd.addEventListener('input', function (event) {
             let value = placaInd.value;
             value = value.replace(/[^A-Z0-9]/gi, '');
             if (value.length <= 7) {
-                value = value.toUpperCase(); 
+                value = value.toUpperCase();
                 value = value.replace(/^([A-Z]{3})([A-Z0-9]{0,4})/, '$1-$2');
-            }    
+            }
             placaInd.value = value;
         });
     }
 });
 
 //ABRE O MODAL DE ENVIO DA PLACA DO CARRO
-function abrirModal(){
+function abrirModal() {
     let input = document.getElementById("placa");
     input.value = "";
     cancelar();
     let form = document.getElementById("form");
-    form.style.display = "block"; 
+    form.style.display = "block";
 }
 
-function abrirModalPesquisa(){
+function abrirModalPesquisa() {
     let input = document.getElementById("placa");
     input.value = "";
     cancelar();
@@ -47,11 +51,38 @@ function abrirModalPesquisa(){
     divPesquisa.style.display = "block";
 }
 
-function pesquisarPlaca(){
-
+function pesquisarPlaca() {
+    let placa = document.getElementById("placa-pesquisa");
+    placa = placa.value;
+    $.ajax({
+        type: "GET",
+        url: `https://localhost:7070/ControleCarro/getUnico/${placa}`,
+        success: carregaItem,
+        header: {},
+        contentType: "application/json",
+        datatype: "json",
+    });
 }
 
-function abrirModalEspec(){
+function carregaItem(linha) {
+    let tabela = document.getElementById("listagem");
+    tabela.innerHTML = "";
+    const carro = `
+    <tr>
+        <td>${linha.id}</td>
+        <td>${linha.placa}</td>
+        <td>${linha.chegada}</td> 
+        <td>${linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida}</td>
+        <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
+        <td>${linha.tempoCobradoHora}</td> 
+        <td>${linha.preco}</td>
+        <td>${linha.valorPagar}</td>
+        <td><Button class="btn btn-danger" onclick="finalizar('${linha.placa}')">Finalizar</Button></td>
+    </tr>`;
+    $(`#listagem`).append($(carro));
+}
+
+function abrirModalEspec() {
     let input = document.getElementById("placa");
     input.value = "";
     let chegada = document.getElementById("chegada");
@@ -63,32 +94,32 @@ function abrirModalEspec(){
     divEspec.style.display = "block";
 }
 
-function registrarEspecifico(){
+function registrarEspecifico() {
     let c = document.getElementById("chegada").value;
     let s = document.getElementById("saida").value;
-    if(s < c ){
+    if (s < c) {
         return;
     }
     cancelar();
 }
 
-function cancelar(){
+function cancelar() {
     let input = document.getElementsByClassName("input-info");
-    for(const inputSeparado of input){
+    for (const inputSeparado of input) {
         inputSeparado.value = "";
     }
     let divs = document.getElementsByClassName("modal-meu")
-    for(const divsSeparadas of divs){
+    for (const divsSeparadas of divs) {
         divsSeparadas.style.display = "none";
     }
-    event.preventDefault();
+    carregarItens();
 }
 
 //ENVIO DA PLACA PARA O BANCO
-function registrarPlaca(){
-    //event.preventDefault();
+function registrarPlaca() {
+    
     let placa = document.getElementById("placa").value;
-    if(placa === ""){
+    if (placa === "") {
         return;
     }
     $.ajax({
@@ -101,8 +132,14 @@ function registrarPlaca(){
 }
 
 //CARREGA CARROS DO BANCO E AGREGA AO TBODY 
-function carregaTabela(itens){
-    itens.forEach(linha => { 
+function carregaTabela(itens) {
+    let tabela = document.getElementById("listagem");
+    tabela.innerHTML = "";
+    let btn = "<Button class='btn btn-danger' onclick='finalizar('${linha.placa}')'>Finalizar</Button>";
+    itens.forEach(linha => {
+        if(linha.duracao != "00:00:00"){
+            btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
+        }
         const carro = `
             <tr>
                 <td>${linha.id}</td>
@@ -112,15 +149,15 @@ function carregaTabela(itens){
                 <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
                 <td>${linha.tempoCobradoHora}</td> 
                 <td>${linha.preco}</td>
-                <td>${linha.valorPagar}</td>
-                <td><Button class="btn btn-danger" onclick="finalizar('${linha.placa}')">Finalizar</Button></td>
+                <td>${btn}</td>
+                <td></td>
             </tr>
        `;
         $(`#listagem`).append($(carro));
-    });  
+    });
 }
 
-function finalizar(placa){
+function finalizar(placa) {
     console.log("acho")
     $.ajax({
         type: "PUT",

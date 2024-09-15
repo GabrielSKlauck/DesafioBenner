@@ -14,7 +14,7 @@ button{
 }
 form,#caixaPesquisa, #caixaPesquisaEspec{
     display: none;
-    width: 100px;
+    width: 120px;
     margin-top: 5px;
 }
 label{
