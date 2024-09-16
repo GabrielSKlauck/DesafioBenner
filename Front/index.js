@@ -7,7 +7,7 @@ window.onload = function () {
     carregarItens();
 }
 
-function carregarItens(){
+function carregarItens() {
     $.ajax({
         type: "GET",
         url: `https://localhost:7070/ControleCarro`,
@@ -67,17 +67,17 @@ function pesquisarPlaca() {
 function carregaItem(linha) {
     let tabela = document.getElementById("listagem");
     tabela.innerHTML = "";
-    if(linha.duracao != "00:00:00"){
+    if (linha.duracao != "00:00:00") {
         btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
-    }else{
+    } else {
         btn = `<Button class='btn btn-danger' onclick='finalizar("${linha.placa}")'>Finalizar</Button>`;
     }
     const carro = `
     <tr>
         <td>${linha.id}</td>
         <td>${linha.placa}</td>
-        <td>${linha.chegada}</td> 
-        <td>${linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida}</td>
+        <td>${formatacaoDatas(linha.chegada)}</td> 
+        <td>${formatacaoDatas(linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida)}</td>
         <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
         <td>${linha.tempoCobradoHora}</td> 
         <td>${linha.preco}</td>
@@ -106,7 +106,7 @@ function registrarEspecifico() {
     if (s < c) {
         return;
     }
-    if(input === ""){
+    if (input === "") {
         return;
     }
     carro = {
@@ -139,7 +139,7 @@ function cancelar() {
 
 //ENVIO DA PLACA PARA O BANCO
 function registrarPlaca() {
-    
+
     let placa = document.getElementById("placa").value;
     if (placa === "") {
         return;
@@ -159,17 +159,17 @@ function carregaTabela(itens) {
     tabela.innerHTML = "";
     let btn;
     itens.forEach(linha => {
-        if(linha.duracao != "00:00:00"){
+        if (linha.duracao != "00:00:00") {
             btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
-        }else{
+        } else {
             btn = `<Button class='btn btn-danger' onclick='finalizar("${linha.placa}")'>Finalizar</Button>`;
         }
         const carro = `
             <tr>
                 <td>${linha.id}</td>
                 <td>${linha.placa}</td>
-                <td>${linha.chegada}</td> 
-                <td>${linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida}</td>
+                <td>${formatacaoDatas(linha.chegada)}</td> 
+                <td>${formatacaoDatas(linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida)}</td>
                 <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
                 <td>${linha.tempoCobradoHora}</td> 
                 <td>${linha.preco}</td>
@@ -181,8 +181,22 @@ function carregaTabela(itens) {
     });
 }
 
+function formatacaoDatas(dataSql) {
+    let dataOriginal = "2024-09-15T20:44:31";
+    let data = new Date(dataOriginal);
+
+    let dia = String(data.getDate()).padStart(2, '0');
+    let mes = String(data.getMonth() + 1).padStart(2, '0');
+    let ano = data.getFullYear();
+    let horas = String(data.getHours()).padStart(2, '0');
+    let minutos = String(data.getMinutes()).padStart(2, '0');
+    let segundos = String(data.getSeconds()).padStart(2, '0');
+
+    let dataFormatada = `${dia}-${mes}-${ano} ${horas}:${minutos}:${segundos}`;
+    return dataFormatada;
+}
+
 function finalizar(placa) {
-    console.log("acho")
     $.ajax({
         type: "PUT",
         url: `https://localhost:7070/ControleCarro/${placa}`,
@@ -191,4 +205,5 @@ function finalizar(placa) {
         contentType: "application/json",
         datatype: "json",
     });
+    cancelar();
 }
