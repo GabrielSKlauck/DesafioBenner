@@ -13,13 +13,35 @@
         <p class="font-weight-bold" id="titulo">Sistema de estacionamento</p>
         <p id="horario-atual"></p>
         <button class="btn btn-success" onclick="abrirModal()">Marcar Entrada</button>
-        
-        <form action="" id="form">       
-            <input type="text" class="form-control" id="placa" maxlength="8" placeholder="Placa">
+        <button class="btn btn-success" onclick="abrirModalPesquisa()">Pesquisar placa</button>
+        <button class="btn btn-success" onclick="abrirModalEspec()">Registrar detalhadamente</button>
+
+        <form action="" id="form" class="modal-meu">       
+            <input type="text" class="form-control input-info" id="placa" maxlength="8" placeholder="Placa">
             <div id="conteudo-botao">
                 <button class="btn btn-primary" id="enviar" onclick="registrarPlaca()">Registrar</button>
-                <button class="btn btn-danger" id="cancelar">Cancelar</button>
+                <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
             </div>          
+        </form>
+        
+        <div id="caixaPesquisa" class="modal-meu">
+            <input type="text" class="form-control input-info" id="placa-pesquisa" maxlength="8" placeholder="Placa">
+            <div id="conteudo-botao">
+                <button class="btn btn-primary" id="enviar" onclick="pesquisarPlaca()">Pesquisar</button>
+                <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
+            </div>
+        </div>
+
+        <form action="" id="caixaPesquisaEspec" class="modal-meu">
+            <input type="text" class="form-control input-info" id="placa-espec" maxlength="8" placeholder="Placa">
+            <label for="">Chegada</label>
+            <input type="datetime-local" class="form-control input-date" id="chegada" style="width: 200px;" min="2024-01-01T00:00" max="2024-12-31T00:00">
+            <label for="">Saida</label>
+            <input type="datetime-local" class="form-control input-date" id="saida" style="width: 200px;" min="2024-01-01T00:00" max="2024-12-31T00:00">
+            <div id="conteudo-botao">
+                <button class="btn btn-primary" id="enviar" onclick="registrarEspecifico()">Inserir</button>
+                <button class="btn btn-danger" id="cancelar" onclick="cancelar()">Cancelar</button>
+            </div>
         </form>
     </div>
     <table class="table table-striped">
@@ -33,6 +55,7 @@
                 <th>Tempo Cobrado por hora</th>
                 <th>Preço</th>
                 <th>Valor a pagar</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody id="listagem">

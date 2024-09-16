@@ -37,5 +37,18 @@ namespace BackEnd_Estacionamento.Controller
             await _carroRepository.Finalizar(placa);
             return Ok();
         }
+
+        [HttpPost("addEspec")]
+        public async Task<IActionResult> AdicionarEspecifico(CarroDetailDTO placa)
+        {
+            await _carroRepository.AdicionarEspecifico(placa);
+            return Ok();
+        }
+
+        [HttpGet("getUnico/{placa}")]
+        public async Task<IActionResult> GetUnico(string placa)
+        {
+            return Ok(await _carroRepository.GetCarro(placa));
+        }
     }
 }
