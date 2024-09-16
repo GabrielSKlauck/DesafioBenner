@@ -3,6 +3,8 @@ using BackEnd_Estacionamento.DTO;
 using BackEnd_Estacionamento.Entity;
 using BackEnd_Estacionamento.Infrastucture;
 using Dapper;
+using System.Collections.Generic;
+using System.Numerics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BackEnd_Estacionamento.Repository
@@ -29,15 +31,29 @@ namespace BackEnd_Estacionamento.Repository
 
         public async Task AdicionarEspecifico(CarroDetailDTO carro)
         {
-            string sql = @$"INSERT INTO CARRO(placa, chegada, saida,preco) 
-                            VALUES(@placa, @chegada, @saida, {2})";
-            await this.Execute(sql, carro);
+
+            string sql = $"SELECT * FROM CARRO WHERE PLACA LIKE '{carro.placa}' AND VALORPAGAR IS NULL";
+            CarroEntity carroVer = null;
+            try
+            {
+                carroVer = await GetConnection().QueryFirstAsync<CarroEntity>(sql, new { carro.placa });
+            }
+            catch (Exception e)
+            { }
+            if (carroVer == null)
+            {
+                sql = @$"INSERT INTO CARRO(placa, chegada, saida, preco)
+                            VALUES(@placa, @chegada, @saida, { 2})";
+                await this.Execute(sql, carro);
+            }
+        
         }
 
         public async Task Finalizar(string placa)
         {
-            string sql = $"SELECT * FROM CARRO WHERE placa LIKE '{placa}'";
+            string sql = $"SELECT * FROM CARRO WHERE placa LIKE '{placa}' AND VALORPAGAR IS NULL";
             CarroEntity carro = (CarroEntity) await GetConnection().QueryFirstAsync<CarroEntity>(sql, new {placa});
+            int idCarro = carro.id;
             DateTime testagemData = new DateTime(00001, 01,01,00,00,00);
 
             DateTime horaAtual;
@@ -72,7 +88,7 @@ namespace BackEnd_Estacionamento.Repository
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
-                                           WHERE PLACA LIKE '{placa}'";
+                                           WHERE ID = {idCarro}";
                     await this.Execute(sql, new { placa });
                 }
                 else
@@ -83,7 +99,7 @@ namespace BackEnd_Estacionamento.Repository
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
-                                           WHERE PLACA LIKE '{placa}'";
+                                           WHERE ID = {idCarro}";
                     await this.Execute(sql, new { placa });
                 }
                
@@ -96,7 +112,7 @@ namespace BackEnd_Estacionamento.Repository
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
-                                           WHERE PLACA LIKE '{placa}'";
+                                           WHERE ID = {idCarro}";
                 await this.Execute(sql, new { placa });
             }
             else
@@ -107,7 +123,7 @@ namespace BackEnd_Estacionamento.Repository
                                            TEMPOCOBRADOHORA = {horaCobrada},
                                            PRECO = 2,
                                            VALORPAGAR = {totalPagar}
-                                           WHERE PLACA LIKE '{placa}'";
+                                           WHERE ID = {idCarro}";
                 await this.Execute(sql, new { placa });
             }
         }
