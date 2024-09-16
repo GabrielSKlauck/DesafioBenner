@@ -64,27 +64,30 @@ function pesquisarPlaca() {
     });
 }
 
-function carregaItem(linha) {
+function carregaItem(itens) {
     let tabela = document.getElementById("listagem");
     tabela.innerHTML = "";
-    if (linha.duracao != "00:00:00") {
-        btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
-    } else {
-        btn = `<Button class='btn btn-danger' onclick='finalizar("${linha.placa}")'>Finalizar</Button>`;
-    }
-    const carro = `
-    <tr>
-        <td>${linha.id}</td>
-        <td>${linha.placa}</td>
-        <td>${formatacaoDatas(linha.chegada)}</td> 
-        <td>${formatacaoDatas(linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida)}</td>
-        <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
-        <td>${linha.tempoCobradoHora}</td> 
-        <td>${linha.preco}</td>
-        <td>R$ ${parseFloat(linha.valorPagar).toFixed(2)}</td>
-        <td>${btn}</Button></td>
-    </tr>`;
-    $(`#listagem`).append($(carro));
+    itens.forEach(linha => {
+        if (linha.duracao != "00:00:00") {
+            btn = "<Button class='btn btn-warning' disable><i>Finalizado</i></Button>";
+        } else {
+            btn = `<Button class='btn btn-danger' onclick='finalizar("${linha.placa}")'>Finalizar</Button>`;
+        }
+        const carro = `
+            <tr>
+                <td>${linha.id}</td>
+                <td>${linha.placa}</td>
+                <td>${formatacaoDatas(linha.chegada)}</td> 
+                <td>${formatacaoDatas(linha.saida === "0001-01-01T00:00:00" ? "-" : linha.saida)}</td>
+                <td>${linha.duracao === "00:00:00" ? "-" : linha.duracao}</td>
+                <td>${linha.tempoCobradoHora}</td> 
+                <td>${linha.preco}</td>
+                <td>R$ ${parseFloat(linha.valorPagar).toFixed(2)}</td>
+                <td>${btn}</td>
+            </tr>
+       `;
+        $(`#listagem`).append($(carro));
+    });
 }
 
 function abrirModalEspec() {

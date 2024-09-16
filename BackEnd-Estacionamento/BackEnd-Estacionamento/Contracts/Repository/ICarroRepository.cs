@@ -9,6 +9,6 @@ namespace BackEnd_Estacionamento.Contracts.Repository
         Task<IEnumerable<CarroEntity>> GetTodos();
         Task Finalizar(string placa);
         Task AdicionarEspecifico(CarroDetailDTO carro);
-        Task<CarroEntity> GetCarro(string placa);
+        Task<IEnumerable<CarroEntity>> GetCarro(string placa);
     }
 }

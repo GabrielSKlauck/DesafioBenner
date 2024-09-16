@@ -128,10 +128,10 @@ namespace BackEnd_Estacionamento.Repository
             }
         }
 
-        public async Task<CarroEntity> GetCarro(string placa)
+        public async Task<IEnumerable<CarroEntity>> GetCarro(string placa)
         {
             string sql = $"SELECT * FROM CARRO WHERE PLACA LIKE '{placa}'";
-            return await GetConnection().QueryFirstAsync<CarroEntity>(sql, new { placa });
+            return await GetConnection().QueryAsync<CarroEntity>(sql, new { placa });
         }
 
         public async Task<IEnumerable<CarroEntity>> GetTodos()
