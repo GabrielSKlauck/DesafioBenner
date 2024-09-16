@@ -11,9 +11,20 @@ namespace BackEnd_Estacionamento.Repository
     {
         public async Task Adicionar(string placa)
         {
-            string sql = @$"INSERT INTO CARRO(placa, preco) 
+            string sql = $"SELECT * FROM CARRO WHERE PLACA LIKE '{placa}' AND VALORPAGAR IS NULL";
+            CarroEntity carro = null;
+            try
+            {
+               carro = await GetConnection().QueryFirstAsync<CarroEntity>(sql, new { placa });
+            }
+            catch (Exception e)
+            {}
+            if (carro == null)
+            {
+                sql = @$"INSERT INTO CARRO(placa, preco) 
                             VALUES('{placa}',{2})";
-            await this.Execute(sql, new { placa});
+                await this.Execute(sql, new { placa });
+            }        
         }
 
         public async Task AdicionarEspecifico(CarroDetailDTO carro)

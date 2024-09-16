@@ -182,8 +182,10 @@ function carregaTabela(itens) {
 }
 
 function formatacaoDatas(dataSql) {
-    let dataOriginal = "2024-09-15T20:44:31";
-    let data = new Date(dataOriginal);
+    if(dataSql === "-"){
+        return "-";
+    }
+    let data = new Date(dataSql);
 
     let dia = String(data.getDate()).padStart(2, '0');
     let mes = String(data.getMonth() + 1).padStart(2, '0');
