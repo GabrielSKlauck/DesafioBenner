@@ -1,8 +1,8 @@
 //AO CARREGAR O HTML, CARREGA A DATA ATUAL
 window.onload = function () {
     let dataAtual = new Date();
-    let data = dataAtual.getDay() + "/" + dataAtual.getMonth() + "/" + dataAtual.getFullYear();
-    document.getElementById("horario-atual").innerHTML = data
+    let data = dataAtual.getDate() + "/" + (dataAtual.getMonth()+1) + "/" + dataAtual.getFullYear();
+    document.getElementById("horario-atual").innerHTML = data;
 
     carregarItens();
 }
@@ -117,6 +117,7 @@ function registrarEspecifico() {
         chegada: c,
         saida: s
     }
+    console.log(carro);
     $.ajax({
         type: "POST",
         url: `https://localhost:7070/ControleCarro/addEspec`,
