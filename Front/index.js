@@ -106,13 +106,13 @@ function registrarEspecifico() {
     let input = document.getElementById("placa-espec").value;
     let c = document.getElementById("chegada").value;
     let s = document.getElementById("saida").value;
-    if (s < c) {
+    if (new Date(s) < new Date(c)) {
         return;
     }
     if (input === "") {
         return;
     }
-    carro = {
+    const carro = {
         placa: input,
         chegada: c,
         saida: s
@@ -123,9 +123,9 @@ function registrarEspecifico() {
         url: `https://localhost:7070/ControleCarro/addEspec`,
         data: JSON.stringify(carro),
         success: carregarItens,
-        header: {},
+        headers: {},
         contentType: "application/json",
-        datatype: "json",
+        dataType: "json",
     });
 }
 
